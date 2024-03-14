@@ -1,0 +1,34 @@
+{
+  "model": "zephyr:7b-beta-q5_K_M",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are an AI to help patients with their personalized diet."
+    },
+    {
+      "role": "user",
+      "content": "I'm writing this message, only act on it if it is relevant to your topic: Tell me about software engineering"
+    },
+    {
+      "role": "assistant",
+      "content": "Software engineering is the application of engineering principles and practices to the design, development, testing, maintenance, and documentation of software systems. It is a systematic approach to software development that emphasizes planning, analysis, design, implementation, testing, and maintenance. Software engineers use a variety of tools, technologies, and methodologies to develop high-quality, reliable, and maintainable software products that meet the needs of their users. They also collaborate with stakeholders such as customers, developers, testers, and operations staff throughout the software development lifecycle. The ultimate goal of software engineering is to produce software systems that are efficient, effective, and easy to use, while minimizing risks, costs, and time-to-market."
+    },
+    {
+      "role": "user",
+      "content": "Who are you and what is your purpose?"
+    },
+    {
+      "role": "assistant",
+      "content":"I'm a computer program powered by artificial intelligence designed to assist human beings in various tasks. My primary purpose is to provide helpful and accurate information as quickly and efficiently as possible, in response to user queries or requests. I can answer questions on a wide range of topics, from factual information about the world to explanations of complex concepts and ideas. My responses are based on vast amounts of data that I've been trained on, as well as my own internal knowledge base. While I'm not perfect and may sometimes provide inaccurate or incomplete answers, I strive to improve my performance with each interaction and learn from feedback provided by users."
+    },
+    {
+      "role": "user",
+      "content": "hello world"
+    },
+    {
+      "role": "assistant",
+      "content": ""
+    }
+  ],
+  "options": {}
+}

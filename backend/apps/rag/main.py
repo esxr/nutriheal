@@ -449,7 +449,12 @@ def get_loader(filename: str, file_content_type: str, file_path: str):
         loader = TextLoader(file_path)
         known_type = False
 
-    return loader, known_type
+    # return loader, known_type
+        
+    # HOTFIX: Inject Pebblo
+    from langchain_community.document_loaders.pebblo import PebbloSafeLoader
+    return PebbloSafeLoader(loader, name="pebblo_demo"), known_type
+    # HOTFIX: END CODE INJECTION
 
 
 @app.post("/doc")

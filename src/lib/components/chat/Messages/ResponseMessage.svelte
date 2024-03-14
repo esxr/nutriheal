@@ -305,11 +305,15 @@
 
 		<div class="w-full overflow-hidden">
 			<Name>
-				{#if message.model in modelfiles}
+				<!-- {#if message.model in modelfiles}
 					{modelfiles[message.model]?.title}
 				{:else}
 					{message.model ? ` ${message.model}` : ''}
-				{/if}
+				{/if} -->
+
+				<!-- HOTFIX: CODE INJECTION -->
+				NutriHeal AI
+				<!-- END HOTFIX -->
 
 				{#if message.timestamp}
 					<span class=" invisible group-hover:visible text-gray-400 text-xs font-medium">

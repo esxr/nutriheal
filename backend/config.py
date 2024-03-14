@@ -23,7 +23,7 @@ try:
 except ImportError:
     print("dotenv not installed, skipping...")
 
-WEBUI_NAME = "Open WebUI"
+WEBUI_NAME = "NutriHeal - Personalized Nutrition for Patients"
 shutil.copyfile("../build/favicon.png", "./static/favicon.png")
 
 ####################################
@@ -246,24 +246,7 @@ DEFAULT_PROMPT_SUGGESTIONS = (
     if "ui" in CONFIG_DATA
     and "prompt_suggestions" in CONFIG_DATA["ui"]
     and type(CONFIG_DATA["ui"]["prompt_suggestions"]) is list
-    else [
-        {
-            "title": ["Help me study", "vocabulary for a college entrance exam"],
-            "content": "Help me study vocabulary: write a sentence for me to fill in the blank, and I'll try to pick the correct option.",
-        },
-        {
-            "title": ["Give me ideas", "for what to do with my kids' art"],
-            "content": "What are 5 creative things I could do with my kids' art? I don't want to throw them away, but it's also so much clutter.",
-        },
-        {
-            "title": ["Tell me a fun fact", "about the Roman Empire"],
-            "content": "Tell me a random fun fact about the Roman Empire",
-        },
-        {
-            "title": ["Show me a code snippet", "of a website's sticky header"],
-            "content": "Show me a code snippet of a website's sticky header in CSS and JavaScript.",
-        },
-    ]
+    else []
 )
 
 

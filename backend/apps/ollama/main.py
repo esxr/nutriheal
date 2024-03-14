@@ -55,11 +55,112 @@ async def cancel_ollama_request(request_id: str, user=Depends(get_current_user))
         raise HTTPException(status_code=401, detail=ERROR_MESSAGES.ACCESS_PROHIBITED)
 
 
+# HOTFIX: FUNCTIONS FOR ADDING PROMPT ENGINEERING TO BODY
+def add_system_prompt(body, custom_content="Sample Content"):
+    try:
+        import json
+
+        # Check if body is a bytes object, if so, decode it
+        if isinstance(body, bytes):
+            body = body.decode("utf-8")
+
+        # Convert string to dictionary if necessary
+        if isinstance(body, str):
+            body = json.loads(body)
+
+        # Proceed only if body is a dictionary and has 'messages'
+        if isinstance(body, dict) and "messages" in body:
+            messages = body["messages"]
+            new_message = {"role": "system", "content": custom_content}
+            messages.insert(0, new_message)
+            body["messages"] = messages
+
+        # Convert the dictionary back to JSON and encode to bytes before returning
+        return json.dumps(body).encode("utf-8")
+
+    except Exception as e:
+        # In case of any error, return the input as it is
+        if isinstance(body, dict):
+            return json.dumps(body).encode(
+                "utf-8"
+            )  # Return as bytes if input was initially a dict
+        elif isinstance(body, bytes):
+            return body  # Return original bytes object
+        elif isinstance(body, str):
+            return body.encode(
+                "utf-8"
+            )  # Return as bytes if input was initially a string
+        else:
+            return str(body).encode(
+                "utf-8"
+            )  # Return string representation of the input encoded as bytes if it's neither
+
+
+def add_prefix_to_user_messages(body, prefix="Sample Prefix: "):
+    try:
+        import json
+
+        # Check if body is a bytes object, if so, decode it
+        if isinstance(body, bytes):
+            body = body.decode("utf-8")
+
+        # Convert string to dictionary if necessary
+        if isinstance(body, str):
+            body = json.loads(body)
+
+        # Proceed only if body is a dictionary and has 'messages'
+        if isinstance(body, dict) and "messages" in body:
+            for message in body["messages"]:
+                # Check if the message is from a user and prepend the prefix
+                if message.get("role") == "user":
+                    message["content"] = prefix + message["content"]
+
+        # Convert the dictionary back to JSON and encode to bytes before returning
+        return json.dumps(body).encode("utf-8")
+
+    except Exception as e:
+        # In case of any error, return the input as it is
+        if isinstance(body, dict):
+            return json.dumps(body).encode(
+                "utf-8"
+            )  # Return as bytes if input was initially a dict
+        elif isinstance(body, bytes):
+            return body  # Return original bytes object
+        elif isinstance(body, str):
+            return body.encode(
+                "utf-8"
+            )  # Return as bytes if input was initially a string
+        else:
+            return str(body).encode(
+                "utf-8"
+            )  # Return string representation of the input encoded as bytes if it's neither
+
+
 @app.api_route("/{path:path}", methods=["GET", "POST", "PUT", "DELETE"])
 async def proxy(path: str, request: Request, user=Depends(get_current_user)):
     target_url = f"{app.state.OLLAMA_BASE_URL}/{path}"
 
     body = await request.body()
+
+    # HOTFIX: ADD PROMPT ENGINEERING TO BODY
+    custom_system_prompt = """
+You are designed exclusively for creating personalized nutrition plans for patients based on their specific health conditions and dietary needs. Upon receiving a patient's data, including their health conditions, allergies, and dietary preferences, you will generate a balanced diet plan tailored to their requirements. You should STRICTLY adhere to the following strict guidelines:
+I REPEAT - STRICTLY ADHERE TO THE FOLLOWING GUIDELINES:
+- IMPORTANT: You should only respond to requests related to creating personalized nutrition plans. 
+- IMPORTANT: If asked about any other topic, you must explicitly REFUSE to ANSWER, stating that responding to such queries is against your policy
+- If the necessary patient data is not provided in the request, you WILL ASK for this data before proceeding.
+- You will NEVER make assumptions or deductions without receiving specific patient data. This is to ensure the safety and well-being of the patients involved.
+
+By adhering to these guidelines, you should ensure that you provide accurate, safe, and legally compliant dietary recommendations to patients.
+"""
+
+    custom_user_prefix = """
+I'll tell you the following about myself, please say "This is off-topic" if this is out of your domain, else respond to my queries.
+"""
+
+    body = add_system_prompt(body, custom_system_prompt)
+    body = add_prefix_to_user_messages(body, custom_user_prefix)
+
     headers = dict(request.headers)
 
     if user.role in ["user", "admin"]:

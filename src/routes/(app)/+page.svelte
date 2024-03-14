@@ -760,7 +760,10 @@
 			);
 
 			if (title) {
-				await setChatTitle(_chatId, title);
+				// await setChatTitle(_chatId, title);
+				// HOTFIX: CODE INJECTION
+				await setChatTitle(_chatId, "NutriHeal - Personalized Nutrition for Patients");
+				// HOTFIX: END CODE INJECTION
 			}
 		} else {
 			await setChatTitle(_chatId, `${userPrompt}`);
