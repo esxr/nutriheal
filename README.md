@@ -2,6 +2,10 @@
 
 ---
 
+![](/demo.gif)
+
+---
+
 NutriHeal is an innovative RAG (Retrieval-Augmented Generation) application designed to offer personalized nutritional advice and healing through natural remedies. By leveraging state-of-the-art technologies, NutriHeal provides users with tailored recommendations to enhance their well-being.
 
 ---
