@@ -2,7 +2,7 @@
 
 ---
 
-![](/demo.gif)
+![](/nutriheal_demo.gif)
 
 ---
 
